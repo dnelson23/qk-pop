@@ -9,3 +9,29 @@ EditorBuildSettings:
     path: Assets/Staging-Test/Phily_Mission_VSlice_Part1.unity
   - enabled: 1
     path: Assets/Staging-Test/Phily_Mission_VSlice_Part2.unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2.unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (2).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (10).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (11).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (6).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (9).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (4).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (8).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (1).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector.unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (5).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (7).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (3).unity
