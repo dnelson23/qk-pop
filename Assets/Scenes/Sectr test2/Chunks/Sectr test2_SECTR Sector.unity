@@ -379,6 +379,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 995303895}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &995724193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 995724194}
+  - 114: {fileID: 995724195}
+  m_Layer: 0
+  m_Name: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector.unity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &995724194
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 995724193}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1440761694}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &995724195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 995724193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f37b2da8475a41af8b67a4b88f532e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RealSector: {fileID: 1440761694}
+  Recentered: 0
 --- !u!1 &1440761693
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +451,7 @@ Transform:
   - {fileID: 995303896}
   - {fileID: 110664045}
   - {fileID: 174710487}
-  m_Father: {fileID: 1618593510}
+  m_Father: {fileID: 995724194}
   m_RootOrder: 0
 --- !u!114 &1440761695
 MonoBehaviour:
@@ -424,7 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children:
   - gameObject: {fileID: 1440761693}
-    gameObjectHash: 387298
+    gameObjectHash: 114322
     member: {fileID: 1440761695}
     renderer: {fileID: 0}
     renderHash: 0
@@ -453,10 +495,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 663738035}
-    gameObjectHash: 386716
+    gameObjectHash: 113740
     member: {fileID: 1440761695}
     renderer: {fileID: 663738037}
-    renderHash: 386720
+    renderHash: 113744
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -482,10 +524,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 995303895}
-    gameObjectHash: 387040
+    gameObjectHash: 114064
     member: {fileID: 1440761695}
     renderer: {fileID: 995303897}
-    renderHash: 387044
+    renderHash: 114068
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -511,10 +553,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 110664044}
-    gameObjectHash: 386422
+    gameObjectHash: 113446
     member: {fileID: 1440761695}
     renderer: {fileID: 110664046}
-    renderHash: 386426
+    renderHash: 113450
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -540,10 +582,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 174710483}
-    gameObjectHash: 386454
+    gameObjectHash: 113478
     member: {fileID: 1440761695}
     renderer: {fileID: 174710484}
-    renderHash: 386456
+    renderHash: 113480
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -570,10 +612,10 @@ MonoBehaviour:
     processed: 1
   renderers:
   - gameObject: {fileID: 663738035}
-    gameObjectHash: 386716
+    gameObjectHash: 113740
     member: {fileID: 1440761695}
     renderer: {fileID: 663738037}
-    renderHash: 386720
+    renderHash: 113744
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -599,10 +641,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 995303895}
-    gameObjectHash: 387040
+    gameObjectHash: 114064
     member: {fileID: 1440761695}
     renderer: {fileID: 995303897}
-    renderHash: 387044
+    renderHash: 114068
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -628,10 +670,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 110664044}
-    gameObjectHash: 386422
+    gameObjectHash: 113446
     member: {fileID: 1440761695}
     renderer: {fileID: 110664046}
-    renderHash: 386426
+    renderHash: 113450
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -657,10 +699,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 174710483}
-    gameObjectHash: 386454
+    gameObjectHash: 113478
     member: {fileID: 1440761695}
     renderer: {fileID: 174710484}
-    renderHash: 386456
+    renderHash: 113480
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -690,10 +732,10 @@ MonoBehaviour:
   shadowLights: []
   shadowCasters:
   - gameObject: {fileID: 663738035}
-    gameObjectHash: 386716
+    gameObjectHash: 113740
     member: {fileID: 1440761695}
     renderer: {fileID: 663738037}
-    renderHash: 386720
+    renderHash: 113744
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -719,10 +761,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 995303895}
-    gameObjectHash: 387040
+    gameObjectHash: 114064
     member: {fileID: 1440761695}
     renderer: {fileID: 995303897}
-    renderHash: 387044
+    renderHash: 114068
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -748,10 +790,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 110664044}
-    gameObjectHash: 386422
+    gameObjectHash: 113446
     member: {fileID: 1440761695}
     renderer: {fileID: 110664046}
-    renderHash: 386426
+    renderHash: 113450
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -777,10 +819,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 174710483}
-    gameObjectHash: 386454
+    gameObjectHash: 113478
     member: {fileID: 1440761695}
     renderer: {fileID: 174710484}
-    renderHash: 386456
+    renderHash: 113480
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -832,45 +874,3 @@ MonoBehaviour:
   DirShadowCaster: {fileID: 0}
   DirShadowDistance: 100
   ChildCulling: 0
---- !u!1 &1618593508
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1618593510}
-  - 114: {fileID: 1618593509}
-  m_Layer: 0
-  m_Name: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector.unity
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1618593509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1618593508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f37b2da8475a41af8b67a4b88f532e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RealSector: {fileID: 1440761694}
-  Recentered: 0
---- !u!4 &1618593510
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1618593508}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1440761694}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
