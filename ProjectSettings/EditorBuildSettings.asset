@@ -35,3 +35,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (7).unity
   - enabled: 1
     path: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (3).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test setup.unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test setup/Chunks/Sectr test setup_Cube (2).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test setup/Chunks/Sectr test setup_Cube (1).unity
+  - enabled: 1
+    path: Assets/Scenes/Sectr test setup/Chunks/Sectr test setup_Cube.unity

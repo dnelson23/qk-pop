@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children:
   - gameObject: {fileID: 85601646}
-    gameObjectHash: 48804
+    gameObjectHash: 88728
     member: {fileID: 85601647}
     renderer: {fileID: 0}
     renderHash: 0
@@ -145,10 +145,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 2054666658}
-    gameObjectHash: 50470
+    gameObjectHash: 90394
     member: {fileID: 85601647}
     renderer: {fileID: 2054666659}
-    renderHash: 50472
+    renderHash: 90396
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -174,10 +174,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 570102972}
-    gameObjectHash: 49144
+    gameObjectHash: 89068
     member: {fileID: 85601647}
     renderer: {fileID: 570102973}
-    renderHash: 49146
+    renderHash: 89070
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -203,10 +203,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 2006862416}
-    gameObjectHash: 50448
+    gameObjectHash: 90372
     member: {fileID: 85601647}
     renderer: {fileID: 2006862417}
-    renderHash: 50450
+    renderHash: 90374
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -232,10 +232,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 306808975}
-    gameObjectHash: 48966
+    gameObjectHash: 88890
     member: {fileID: 85601647}
     renderer: {fileID: 306808976}
-    renderHash: 48968
+    renderHash: 88892
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -262,10 +262,10 @@ MonoBehaviour:
     processed: 1
   renderers:
   - gameObject: {fileID: 2054666658}
-    gameObjectHash: 50470
+    gameObjectHash: 90394
     member: {fileID: 85601647}
     renderer: {fileID: 2054666659}
-    renderHash: 50472
+    renderHash: 90396
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -291,10 +291,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 570102972}
-    gameObjectHash: 49144
+    gameObjectHash: 89068
     member: {fileID: 85601647}
     renderer: {fileID: 570102973}
-    renderHash: 49146
+    renderHash: 89070
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -320,10 +320,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 2006862416}
-    gameObjectHash: 50448
+    gameObjectHash: 90372
     member: {fileID: 85601647}
     renderer: {fileID: 2006862417}
-    renderHash: 50450
+    renderHash: 90374
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -349,10 +349,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 306808975}
-    gameObjectHash: 48966
+    gameObjectHash: 88890
     member: {fileID: 85601647}
     renderer: {fileID: 306808976}
-    renderHash: 48968
+    renderHash: 88892
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -382,10 +382,10 @@ MonoBehaviour:
   shadowLights: []
   shadowCasters:
   - gameObject: {fileID: 2054666658}
-    gameObjectHash: 50470
+    gameObjectHash: 90394
     member: {fileID: 85601647}
     renderer: {fileID: 2054666659}
-    renderHash: 50472
+    renderHash: 90396
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -411,10 +411,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 570102972}
-    gameObjectHash: 49144
+    gameObjectHash: 89068
     member: {fileID: 85601647}
     renderer: {fileID: 570102973}
-    renderHash: 49146
+    renderHash: 89070
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -440,10 +440,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 2006862416}
-    gameObjectHash: 50448
+    gameObjectHash: 90372
     member: {fileID: 85601647}
     renderer: {fileID: 2006862417}
-    renderHash: 50450
+    renderHash: 90374
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -469,10 +469,10 @@ MonoBehaviour:
     shadowCullingMask: 0
     processed: 1
   - gameObject: {fileID: 306808975}
-    gameObjectHash: 48966
+    gameObjectHash: 88890
     member: {fileID: 85601647}
     renderer: {fileID: 306808976}
-    renderHash: 48968
+    renderHash: 88892
     light: {fileID: 0}
     lightHash: 0
     terrain: {fileID: 0}
@@ -538,7 +538,7 @@ Transform:
   - {fileID: 570102974}
   - {fileID: 2006862418}
   - {fileID: 306808977}
-  m_Father: {fileID: 1003763217}
+  m_Father: {fileID: 779817802}
   m_RootOrder: 0
 --- !u!1 &306808975
 GameObject:
@@ -686,15 +686,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 570102972}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1003763216
+--- !u!1 &779817801
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 1003763217}
-  - 114: {fileID: 1003763218}
+  - 4: {fileID: 779817802}
+  - 114: {fileID: 779817803}
   m_Layer: 0
   m_Name: Assets/Scenes/Sectr test2/Chunks/Sectr test2_SECTR Sector (3).unity
   m_TagString: Untagged
@@ -702,12 +702,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1003763217
+--- !u!4 &779817802
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1003763216}
+  m_GameObject: {fileID: 779817801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -715,12 +715,12 @@ Transform:
   - {fileID: 85601648}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &1003763218
+--- !u!114 &779817803
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1003763216}
+  m_GameObject: {fileID: 779817801}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f37b2da8475a41af8b67a4b88f532e7, type: 3}
