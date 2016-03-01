@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Interactable : MonoBehaviour
 {
-	public enum ObjectType { Ladder, Door, Sidle }
+	public enum ObjectType { Ladder, Door, Sidle, Ledge }
 	public ObjectType Type { get; set; }
 
 	// Ladder Public Variables
@@ -47,6 +47,10 @@ public class Interactable : MonoBehaviour
 
 			break;
 		}
+	}
+
+	void Update() {
+		Debug.Log (this.gameObject.name + this.Type);
 	}
 
 	void InitLadderComponents() 

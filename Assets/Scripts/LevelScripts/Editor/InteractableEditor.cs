@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,6 +34,9 @@ public class InteractableEditor : Editor
 				EditorGUILayout.Vector3Field("End: ", thisObject.ladderTop);
 
 				break;
+			case Interactable.ObjectType.Ledge:
+				
+				break;
 		}
 
 		if (GUI.changed) {
@@ -44,13 +48,18 @@ public class InteractableEditor : Editor
 	public void OnSceneGUI()
 	{
 		thisObject = (Interactable)target;
-
+		Debug.Log ("player", thisObject);
 		switch (thisObject.Type) 
 		{
-			case Interactable.ObjectType.Ladder:
+
+		case Interactable.ObjectType.Ladder:
 				// Show start and end labels
 				Handles.Label(thisObject.ladderBottom, "Start");
 				Handles.Label (thisObject.ladderTop, "End");
+				break;
+
+			case Interactable.ObjectType.Ledge:
+				// Show start and end labels
 				break;
 		}
 

@@ -1,9 +1,9 @@
-﻿#pragma warning disable 414     //Variable assigned and not used: slideSpeed, groundNormal, slideTheshold, MaxControllableSlideMagnitude, slideDirection, targetAngle
+#pragma warning disable 414     //Variable assigned and not used: slideSpeed, groundNormal, slideTheshold, MaxControllableSlideMagnitude, slideDirection, targetAngle
 
 using UnityEngine;
 using System.Collections;
 using Debug = FFP.Debug;
-
+//using CharacterState = CharacterStates;
 public class QK_Character_Movement : MonoBehaviour {
 
 	private static QK_Character_Movement _instance;
@@ -19,11 +19,14 @@ public class QK_Character_Movement : MonoBehaviour {
 		}
 	}
 
+	//moved to seperate enum script
 	public enum CharacterState {Idle, Move, Pivot, Sprint, Crouch, Hang, Ladder, Sidle, Wait, Normal}
 	public CharacterState _moveState { get; private set; }
-	public CharacterState _stateModifier { get; private set; }
+	public CharacterState _stateModifier { get; set; }
 
 	public static CharacterController charCont;
+
+	public GameObject LedgeDetect;
 
 	[ReadOnly] public float curSpeed = 0f;
 	private float acceleration = 0.3f;
@@ -43,6 +46,7 @@ public class QK_Character_Movement : MonoBehaviour {
 	private Vector3 groundNormal = Vector3.zero;
 
 	private Interactable iObject;
+	private GameObject tempObj;
 	private GameObject triggeredObj;
 
     // Ladder Variables
@@ -51,6 +55,11 @@ public class QK_Character_Movement : MonoBehaviour {
 	private bool dismountBottom = false;
     private Vector3 climbToPosition = Vector3.zero;
 	private Vector3 ladderDismountPos = Vector3.zero;
+
+	// Ledge Variables
+	private bool onLedge = false;
+	RaycastHit ledgeTest;
+	public GameObject ledge = null;
 
 	// This is for Slide if implemented
 	private float slideTheshold = 0.6f;
@@ -83,7 +92,9 @@ public class QK_Character_Movement : MonoBehaviour {
 
 		CalculateMovementDirection ();
 
+
 		ApplyGravity ();
+
 
 		DetermineCharacterState ();
 
@@ -92,7 +103,9 @@ public class QK_Character_Movement : MonoBehaviour {
 			case CharacterState.Ladder:
 				ClimbLadder();
 				break;
-
+			case CharacterState.Hang:
+				ClimbLedge();
+				break;
 			default:
 				ProcessStandardMotion();
 				break;
@@ -240,6 +253,11 @@ public class QK_Character_Movement : MonoBehaviour {
 				}
 			}
 
+			if (Input.GetKeyDown(KeyCode.Space)) 
+			{
+				tempObj = GetLedge();//todo
+			}
+
 			if (Input.GetButton("Jump")) {
 				Jump ();
 				return;
@@ -253,6 +271,29 @@ public class QK_Character_Movement : MonoBehaviour {
 				_stateModifier = CharacterState.Normal;
 			}
 		}
+	}
+
+	//todo capsulecast up
+	GameObject GetLedge()
+	{
+
+		//instantiate game object to "cast"
+		//on collision inside helper script the game determines if player should jump to it
+		Vector3 tempLoc = this.gameObject.transform.position;
+		tempLoc.y += 3f;
+		GameObject detector = Instantiate(LedgeDetect, tempLoc, this.transform.rotation) as GameObject;
+		Physics.IgnoreCollision(this.transform.GetComponent<Collider>(), detector.transform.GetComponent<Collider>(), true);
+		//Destroy (detector.gameObject);
+
+		if (ledge != null) {
+			triggeredObj = ledge;
+			onLedge = true;
+			//return ledge.GetComponent<Interactable>();
+			return ledge;
+		} else {
+			return null;
+		}
+
 	}
 
 	Interactable GetActionObject()
@@ -298,12 +339,71 @@ public class QK_Character_Movement : MonoBehaviour {
 		} else
 			return null;
 	}
-
 	void Jump() 
 	{
 		if (charCont.isGrounded)
 			verticalVelocity = jumpSpeed;
 	}
+
+
+	void ClimbLedge()
+	{
+		if (tempObj == null) {
+			// For some reason we're trying to climb something thats not a ledge
+			_stateModifier = CharacterState.Normal;
+			return;
+		}
+		if (onLedge) {
+			//this.gameObject.transform.position = iObject.gameObject.transform.position;
+			//find the position on the ledge that the player is supposed to be at
+			//move left and right as needed
+			if (Input.GetKeyDown(KeyCode.S)) 
+			{
+
+				if(_stateModifier == CharacterState.Hang){
+					_stateModifier = CharacterState.Normal;
+					ledge = null;
+					onLedge = false;
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.Space)) 
+			{
+				if (Input.GetKeyUp(KeyCode.Space)) 
+				{
+					if(_stateModifier == CharacterState.Hang){
+						_stateModifier = CharacterState.Normal;
+						ledge = null;
+						onLedge = false;
+					}
+				}
+
+			}
+			if (Input.GetKey(KeyCode.A)){
+				//move left
+				transform.position = Vector3.MoveTowards(transform.position, ledge.GetComponent<QK_Ledge>().getLeftPoint().transform.position, 0.04f);
+
+			}
+			if (Input.GetKey (KeyCode.D)){
+				//move right
+				transform.position = Vector3.MoveTowards(transform.position, ledge.GetComponent<QK_Ledge>().getRightPoint().transform.position, 0.04f);
+			}
+			if (Input.GetKeyDown (KeyCode.W)){
+				//climb ledge
+				if (Input.GetKeyDown (KeyCode.W)){
+						Vector3 tempPos = transform.position;
+						tempPos.y += 3f;
+						transform.position = tempPos;
+						if(_stateModifier == CharacterState.Hang){
+							_stateModifier = CharacterState.Normal;
+							ledge = null;
+							onLedge = false;
+						}
+				}
+				
+			}
+		}
+	}
+
 
 	void ClimbLadder()
 	{
@@ -436,7 +536,7 @@ public class QK_Character_Movement : MonoBehaviour {
 			return GetComponentInHeirarchy<T>(obj.transform.parent.gameObject);
 		}
 	}
-		
+
 	void OnDrawGizmosSelected()
 	{
 #if UNITY_EDITOR
