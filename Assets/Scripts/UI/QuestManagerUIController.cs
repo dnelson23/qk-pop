@@ -6,27 +6,30 @@ using UnityEngine.EventSystems;
 
 public class QuestManagerUIController : MonoBehaviour {
 
-	GameObject player;
 	public GameObject questContainer;
-	QuestManager qm;
 	public GameObject questUI;
+	public float spacing;
+
+	GameObject player;
+	GameObject moreQuestInfo;
+	QuestManager qm;
 	Button questButton;
 	float buttonHeight;
-	public float spacing;
-	GameObject moreQuestInfo;
+	float newScrollVal;
+	float qcHeight;
 	Text moreQuestInfoTitle;
 	Text moreQuestInfoDescription;
 	Scrollbar mainScrollbar;
 	Scrollbar moreInfoScrollbar;
 	bool mainSelected;
 	bool isScrolling;
-	float newScrollVal;
 	EventSystem theEventSystem;
-	float qcHeight;
 	int lastButtonSelected;
 	List<GameObject> allQuests;
 	List<Quest>[] theLists;
-	
+	GameHUD gameHUD;
+
+
 	void Start(){
 		player = GameObject.Find ("_Player");
 		if (player) {
@@ -62,6 +65,10 @@ public class QuestManagerUIController : MonoBehaviour {
 		if(!theEventSystem){
 			Debug.LogError("QuestManagerUI script could not find the EventSystem in the scene. Make sure the scene has an EventSystem");
 		}
+		gameHUD = GameObject.Find ("_HUDManager").GetComponent<GameHUD> ();
+		if (!gameHUD) {
+			Debug.LogError("Could not find the 'GameHUD' script on the '_HUDManager' GameObject in the scene: " + Application.loadedLevelName);
+		}
 		questButton = questUI.GetComponent<Button> ();
 		buttonHeight = questButton.GetComponent<RectTransform> ().sizeDelta.y;
 		theLists = new List<Quest>[3];
@@ -72,12 +79,13 @@ public class QuestManagerUIController : MonoBehaviour {
 		for(int i = 0; i < theLists.Length; i++){
 			qcHeight += (theLists[i].Count * (buttonHeight + spacing) - spacing);
 		}
-		qm.LoadQuests ();
+		//qm.LoadQuests ();
 	}
 
 	void Update(){
-		//For debugging, remove later.
+		//For debugging, change to use input manager later.
 		if (Input.GetKeyDown (KeyCode.F5)) {
+			qm.LoadQuests();
 			showQuests();
 		}
 		if((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)) && mainSelected){
@@ -92,6 +100,10 @@ public class QuestManagerUIController : MonoBehaviour {
 		if(Input.GetKeyDown (KeyCode.Escape) && !mainSelected){
 			allQuests[lastButtonSelected].GetComponent<Button>().Select();
 			mainSelected = true;
+		}
+		if (Input.GetKeyDown (KeyCode.Escape) && mainSelected) {
+			//go back to Journal
+			gameHUD.HideQMUI();
 		}
 	}
 
@@ -144,7 +156,7 @@ public class QuestManagerUIController : MonoBehaviour {
 			moreQuestInfoTitle.text = "No Quests!";
 			moreQuestInfoDescription.text = "You have no quests! Go explore to find some!";
 		}
-		StartCoroutine(showMoreInfoScrollbar());
+		//StartCoroutine(showMoreInfoScrollbar());
 
 		if (qm.questCount < 7) {
 			GameObject scrollingHandle = mainScrollbar.transform.FindChild ("Sliding Area").transform.FindChild ("Handle").gameObject;
@@ -154,7 +166,7 @@ public class QuestManagerUIController : MonoBehaviour {
 			GameObject scrollingHandle = mainScrollbar.transform.FindChild ("Sliding Area").transform.FindChild ("Handle").gameObject;
 			scrollingHandle.SetActive (true);
 		}
-		//StartCoroutine (showMoreInfoScrollbar ());
+		StartCoroutine (showMoreInfoScrollbar ());
 	}
 
 	/* Each time a button is dynamically created, a listener is added to it which calls the clickButton() function.
@@ -179,16 +191,37 @@ public class QuestManagerUIController : MonoBehaviour {
 	/* This coroutine is needed to fix a bug.
 	 * Without the short delay that this adds into the code, the program was getting the previous value for the height of the moreQuestInfoDescription
 	 */
-		IEnumerator showMoreInfoScrollbar(){
+	/*	IEnumerator showMoreInfoScrollbar(){
+			Debug.Log ("Showing more info scrollbar. " + moreQuestInfoDescription.GetComponent<RectTransform>().rect.height.ToString());
 			yield return new WaitForSeconds (0.00001f);
+			Debug.Log ("yield returned new!");
 			if(moreQuestInfoDescription.GetComponent<RectTransform>().rect.height < 560){
 				moreInfoScrollbar.gameObject.SetActive(false);
+				Debug.Log ("more info scroll bar is less than 560!");
 			}
 			else{
 				moreInfoScrollbar.gameObject.SetActive(true);
+				Debug.Log ("more info scroll bar is greater than 560!");
 			}
 		}
+	*/
 
+	IEnumerator showMoreInfoScrollbar(){
+		while (true) {
+			float delayTime = Time.realtimeSinceStartup + 0.00001f;
+			while(Time.realtimeSinceStartup < delayTime){
+				yield return null;
+			}
+			break;
+		}
+		if(moreQuestInfoDescription.GetComponent<RectTransform>().rect.height < 560){
+			moreInfoScrollbar.gameObject.SetActive(false);
+		}
+		else{
+			moreInfoScrollbar.gameObject.SetActive(true);
+		}
+	}
+	
 	/* Helper function that deletes all of the buttons that were dynamically created
 	 */
 	public void removeQuestUIobjects(){
@@ -203,6 +236,7 @@ public class QuestManagerUIController : MonoBehaviour {
 	 * j is the index of the quest in the list
 	 */
 	void showMoreQuestInfo(int iter){
+
 		int i;
 		int j;
 		if(iter < theLists[0].Count){

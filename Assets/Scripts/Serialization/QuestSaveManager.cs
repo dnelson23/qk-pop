@@ -103,4 +103,9 @@ public class QuestSaveManager : SaveManager {
 
 		return null;
 	}
+
+	public int DebugFunctionDeleteLater(){
+		return 10;
+	}
+
 }

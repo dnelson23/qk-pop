@@ -17,25 +17,36 @@ public class QuestManager : MonoBehaviour {
     void Awake()
     {
         gameObject.AddComponent<DebugOnScreen>();
+		currentQuests = new List<Quest> ();
+		failedQuests = new List<Quest> ();
+		completedQuests = new List<Quest> ();
     }
 
     void Start() {
 		questManagerUI = GameObject.Find("QuestManagerUI");
 		if (questManagerUI) {
 			qmUI = questManagerUI.GetComponent<QuestManagerUIController>();
+			questManagerUI.SetActive(false);
 		}
 		else {
-			Debug.LogError("QuestManager script attached to the player could not find the 'QuestManagerUI' UI object!");
+			Debug.LogError("QuestManager script attached to the player could not find the 'QuestManagerUI' UI GameObject in the scene: " + Application.loadedLevelName);
 		}
 		_quest = new Quest (null, null, null, -1, null);
-		currentQuests = new List<Quest> ();
+		/*currentQuests = new List<Quest> ();
 		failedQuests = new List<Quest> ();
 		completedQuests = new List<Quest> ();
-		_questSaveManager = (QuestSaveManager)FindObjectOfType (typeof(QuestSaveManager));
+		*/
+		//_questSaveManager = (QuestSaveManager)FindObjectOfType (typeof(QuestSaveManager));
+		_questSaveManager = GameObject.Find ("qmSaveManager").GetComponent<QuestSaveManager> ();
+		if (!_questSaveManager) {
+			Debug.LogError("Could not find the '_questSaveManagerComponent' in the scene: " + Application.loadedLevelName);
+		}
 	}
 
 	[EventVisibleAttribute]
 	public void LoadQuests() {
+		int x = _questSaveManager.DebugFunctionDeleteLater ();
+		print (x);
 
 		List<Quest> newQuestList = _questSaveManager.LoadQuests();
 		if (newQuestList != null) {

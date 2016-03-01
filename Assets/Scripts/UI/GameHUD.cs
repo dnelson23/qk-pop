@@ -29,9 +29,12 @@ public class GameHUD : MonoBehaviour {
 	GameObject gameMap;						//!<The map iamge on a plane
 	GameObject player;						//!<reference to player
 	public GameObject pauseMenu;
-
 	public PauseMenu accessManager;
     public MainMenuManager menuManager;
+	public RenderTexture MiniMapRenderTexture;
+	public Material MiniMapMaterial;
+	public float minimapXOffset;
+	public float minimapYOffset;
 	
 	GameObject mapCam;								//!<Camera used for minimap
 	static GameObject objectiveText;						//!<Objective Text UI element
@@ -48,10 +51,19 @@ public class GameHUD : MonoBehaviour {
 	GameObject slider;
 	GameObject leftArrow;
 	GameObject rightArrow;
-
+	GameObject journal;
+	GameObject questManagerUI;
+	GameObject minimapRedArrow; 					//!<Arrow for the player representation on the minimap
+	GameObject worldMap;
+	GameObject mainCamera;
+	GameObject minimapCamera;
+	GameObject minimapCompass;
 	GameObject testObjective;
 
+	float offset = 10f;
+
 	void Awake() {
+
 		#region singletonEnforcement
 		if(instance == null) {
 			instance = this;
@@ -62,29 +74,42 @@ public class GameHUD : MonoBehaviour {
 		}
 		#endregion
 
+
+
         UIhud = GameObject.Find("_UI");
 		mainHUDCanvas = GameObject.Find("mainHUD");
 		worldMapCanvas = GameObject.Find("worldMapCanvas");
 		gameMap = GameObject.Find("mapBG");
 		player = GameObject.Find("_Player");
-		testObjective = GameObject.Find("TestObjective");
-        if (!pauseMenu)
-        {
+
+		//testObjective = GameObject.Find("TestObjective");
+		/*if (testObjective) {
+			DebugOnScreen.Log ("Found: " + testObjective.name);
+		}
+		*/
+		if (!pauseMenu){
             pauseMenu = GameObject.Find("pauseMenu");
         }
 		pauseMenu.SetActive (false);
-		
+		//DebugOnScreen.Log ("HERE");
 		//!Turn on UI stuff
 		worldMapCanvas.SetActive(true);
 
 		//!Fill mapLabels array
-		mapLabels = GameObject.FindGameObjectsWithTag("worldMapLabel");
+		mapLabels = GameObject.FindGameObjectsWithTag("worldMapLabel"); //This is giving issues in a build. GameHUD script will not continue with this line right now.
+
 		closeMapButton = GameObject.Find("CloseMapButton");
-		closeMapButton.SetActive(false);
+
+		if (closeMapButton) {
+			closeMapButton.SetActive (false);
+		}
 
 		//!Set mapcam reference
-		mapCam = GameObject.Find("mapCam");
+		//mapCam = GameObject.Find("mapCam");
 		//!Set compassCameraPoint reference
+
+
+
 		compassCameraPoint = GameObject.Find("compassCameraPoint");
 		compass = GameObject.Find("compassSlider");
 		slider = compass.transform.FindChild ("Handle Slide Area").gameObject;
@@ -98,14 +123,56 @@ public class GameHUD : MonoBehaviour {
 		objectiveText = GameObject.Find("objectiveText");
 
 		phoneButtons = GameObject.Find("PhoneButtons");
+
 		mapElements = GameObject.Find("MapElements");
 		mapElements.SetActive(false);
+		journal = GameObject.Find ("Journal");
+		if (!journal) {
+			print ("Could not find the 'Journal' GameObject in the current Scene: " + Application.loadedLevelName);
+		} else {
+			journal.SetActive (false);
+		}
 
+		questManagerUI = GameObject.Find ("QuestManagerUI");
+		if (!questManagerUI) {
+			print ("Could not find the 'QuestManagerUI' GameObject in the current Scene: " + Application.loadedLevelName);
+		//} else {
+			//questManagerUI.SetActive (false);
+		}
+
+		minimapRedArrow = GameObject.Find ("MinimapRedArrow");
+		if(!minimapRedArrow){
+			print ("Could not find the 'MinimapRedArrow' GameObject in the current Scene: " + Application.loadedLevelName);
+		}
+		worldMap = GameObject.Find("WorldMap");
+		if(!worldMap){
+			print("Could not find the 'WorldMap' GameObject in the current Scene: " + Application.loadedLevelName);
+		}
+		mainCamera = GameObject.Find ("_Main Camera");
+		if(!mainCamera){
+			print("Could not find the '_Main Camera' GameObject in the current Scene: " + Application.loadedLevelName);
+		}
+		minimapCamera = GameObject.Find ("MinimapCamera");
+		if(!minimapCamera){
+			print("Could not find the 'MinimapCamera' GameObject in the current Scene: " + Application.loadedLevelName);
+		}
+		minimapCompass = GameObject.Find ("MinimapCompass");
+		if (!minimapCompass) {
+			print("Could not find the 'MinimapCompass' GameObject in the current Scene: " + Application.loadedLevelName);
+		}
 	}
 
 	void Start() {
 		//Place the ability buttons in the Phone Menu
 		//SpawnHudAbilityIcons ();
+	}
+
+	void Update(){
+		if (journal.activeSelf) {
+		}
+		if (Input.GetKeyDown (KeyCode.Escape) && journal.activeSelf) {
+			CloseJournal();
+		}
 	}
 
 	void FixedUpdate() {
@@ -114,6 +181,11 @@ public class GameHUD : MonoBehaviour {
 
 		//!Set the compass indicator
 		setCompassValue(calculateObjectiveAngle(testObjective));
+	}
+
+	void OnGUI(){
+		//!Calls the DrawTexture function to display the minimap on the screen
+		Graphics.DrawTexture (new Rect (minimapXOffset, Screen.height - 256 - minimapYOffset, 256, 256), MiniMapRenderTexture, MiniMapMaterial);
 	}
 
 	//!Call this to update objective tet at top of the screen
@@ -127,13 +199,34 @@ public class GameHUD : MonoBehaviour {
 	public void rotateMapObjects() {
 		Quaternion newRotation;
 		foreach(GameObject curLabel in mapLabels) {
-			newRotation = Quaternion.Euler(new Vector3(90, 0, -player.transform.rotation.eulerAngles.y));
-			curLabel.GetComponent<RectTransform>().rotation = newRotation;
+			rotateMapObjectsAboutGameObject(curLabel, mainCamera);
 		}
+		rotateMapObjectsAboutGameObject(minimapRedArrow, player);
+		moveMapObjectsFromOtherObject(minimapRedArrow, player, new Vector3(0, -15, 0));
+		rotateMapObjectsAboutGameObject (minimapCamera, mainCamera);
+		moveMapObjectsFromOtherObject(minimapCamera, player, new Vector3(0, -10, 0));
+		moveMapObjectsFromOtherObject (minimapCompass, player, new Vector3(0, -16, 0));
+	}
+
+	void rotateMapObjectsAboutGameObject(GameObject mainObject, GameObject secondaryObject){
+		Quaternion newRotation;
+		newRotation = Quaternion.Euler(new Vector3(90, 0, -secondaryObject.transform.rotation.eulerAngles.y));
+		if(mainObject.GetComponent<RectTransform>()){
+			mainObject.GetComponent<RectTransform>().rotation = newRotation;
+		}
+		else{
+			mainObject.GetComponent<Transform>().rotation = newRotation;
+		}
+	}
+	
+
+	void moveMapObjectsFromOtherObject(GameObject mainObject, GameObject secondaryObject, Vector3 positionOffest){
+		mainObject.transform.position = secondaryObject.transform.position + positionOffest;
 	}
 
 	public void setCompassValue(float newValue) {
-        if (testObjective == null)
+
+		if (testObjective == null)
         {
             return;
         }
@@ -179,6 +272,7 @@ public class GameHUD : MonoBehaviour {
 	}
 
 	public float calculateObjectiveAngle(GameObject objective) {
+
         if (objective == null)
         {
             return 0;
@@ -280,4 +374,31 @@ public class GameHUD : MonoBehaviour {
     {
         menuManager.GoToOptions();
     }
+
+	public void ShowJournal(){
+		journal.SetActive (true);
+		accessManager.isOnPauseMenu = false;
+		journal.transform.FindChild ("MainScrollView").FindChild ("JournalItems").FindChild ("QuestsItem").GetComponent<Button>().Select();
+		pauseMenu.SetActive (false);
+	}
+
+	public void CloseJournal(){
+		print ("Closing Journal");
+		journal.SetActive (false);
+		pauseMenu.SetActive (true);
+		accessManager.isOnPauseMenu = true;
+	}
+
+	public void ShowQMUI(){
+		questManagerUI.SetActive (true);
+		questManagerUI.GetComponent<QuestManagerUIController> ().showQuests ();
+		journal.SetActive (false);
+	}
+
+	public void HideQMUI(){
+		questManagerUI.SetActive (false);
+		journal.SetActive (true);
+		journal.transform.FindChild ("MainScrollView").FindChild ("JournalItems").FindChild ("QuestsItem").GetComponent<Button>().Select();
+		print ("Hiding QMUI");
+	}
 }
