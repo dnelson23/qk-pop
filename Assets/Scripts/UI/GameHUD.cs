@@ -30,12 +30,14 @@ public class GameHUD : MonoBehaviour {
 	public GameObject pauseMenu;
 	public PauseMenu accessManager;
     public MainMenuManager menuManager;
+	public bool showMinimap = true;
 	public RenderTexture MiniMapRenderTexture;
 	public Material MiniMapMaterial;
 	public float minimapXOffset;
 	public float minimapYOffset;
 	public Sprite[] targetableIcons;
 	public Sprite enemyIcon;
+
 	//public GameObject closestTargetIconPrefab;
 
 	GameObject mapCam;								//!<Camera used for minimap
@@ -47,7 +49,7 @@ public class GameHUD : MonoBehaviour {
 	bool canSpin = false;
 	GameObject closeMapButton;
 	GameObject phoneButtons;
-	GameObject mapElements;
+	//GameObject mapElements;
 	GameObject compassCameraPoint;					//!<Point at camera location used to calculate objective positions
 	GameObject compass;
 	GameObject slider;
@@ -114,8 +116,8 @@ public class GameHUD : MonoBehaviour {
 
 		phoneButtons = GameObject.Find("PhoneButtons");
 
-		mapElements = GameObject.Find("MapElements");
-		mapElements.SetActive(false);
+		//mapElements = GameObject.Find("MapElements");
+		//mapElements.SetActive(false);
 		journal = GameObject.Find ("Journal");
 		if (!journal) {
 			print ("Could not find the 'Journal' GameObject in the current Scene: " + Application.loadedLevelName);
@@ -183,7 +185,9 @@ public class GameHUD : MonoBehaviour {
 
 	void OnGUI(){
 		//!Calls the DrawTexture function to display the minimap on the screen
-		Graphics.DrawTexture (new Rect (minimapXOffset, Screen.height - 256 - minimapYOffset, 256, 256), MiniMapRenderTexture, MiniMapMaterial);
+		if (showMinimap) {
+			Graphics.DrawTexture (new Rect (minimapXOffset, Screen.height - 256 - minimapYOffset, 256, 256), MiniMapRenderTexture, MiniMapMaterial);
+		}
 	}
 
 	//!Call this to update objective tet at top of the screen
@@ -313,7 +317,7 @@ public class GameHUD : MonoBehaviour {
 
 
 	//Shows map on phone and roates and resizes phone to screen
-	public void showMap() {
+	/*public void showMap() {
 		phoneButtons.SetActive(false);
 		mapElements.SetActive(true);
 		closeMapButton.SetActive(true);
@@ -328,7 +332,7 @@ public class GameHUD : MonoBehaviour {
 		GameObject.Find("PhoneMenu").GetComponent<Animator>().SetBool("mapActive", false);
 
 	}
-
+	*/
 	public void ChangeInputToUI(bool change = true) {/*
 		if(change)
 		InputManager.instance.ChangeInputType("UIInputType");

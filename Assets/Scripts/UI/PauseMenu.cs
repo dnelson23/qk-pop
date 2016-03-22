@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class PauseMenu : MonoBehaviour {
+
+	public static PauseMenu Instance;
+
 	private bool isPaused = false;
 
 	public bool isOnPauseMenu = false;
