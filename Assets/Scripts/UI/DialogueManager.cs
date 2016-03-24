@@ -159,7 +159,7 @@ public class DialogueManager : MonoBehaviour {
 			ShowContinueButton();
 		} else {
 			for(int i = 0; i < _choices.Length; i++) {
-			Debug.Log (_choices[i]);
+				//Debug.Log (_choices[i]);
 				_choiceButtons[i].SetActive (true);
 				_choiceButtons[i].transform.FindChild ("Text").GetComponent<Text>().text = _choices[i];
 			}
@@ -228,5 +228,4 @@ public class DialogueManager : MonoBehaviour {
 		
 		return jsonParsed;
 	}
-
 }

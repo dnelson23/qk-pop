@@ -28,9 +28,4 @@ public class DialogueCollider : MonoBehaviour {
 		NPCFocus = null;
 		NPCDialogue = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
 }

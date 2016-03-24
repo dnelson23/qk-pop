@@ -23,6 +23,9 @@ public class PauseMenu : MonoBehaviour {
 
     void Update() {                                // Pause must be on Update() if put on FixedUpdate()                                            
                                                    //Debug.Log(Time.timeScale);                  // The game will get stuck and will have to reset
+		if (isPaused) {
+			print ("its paused");
+		}
 
         // if (InputManager.input.isPause){}
         //  if (InputManager.input.)

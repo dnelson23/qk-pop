@@ -5,35 +5,35 @@ using SimpleJSON;
 using Debug = FFP.Debug;
 
 //! InputType responsible for normal QK in game movement controls
-public class GameInputType : InputType {
-
-	// Dictionaries that hold all inputs. Input list is read from JSON file
-	protected Dictionary<string, string> keyButtons = new Dictionary<string, string>();
-	protected Dictionary<string, string> controllerButtons = new Dictionary<string, string> ();
-
+public class GameInputType : InputType
+{
 	protected bool dPadUp { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadVertString")) > 0; } }
 	protected bool dPadDown { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadVertString")) < 0; } }
 	protected bool dPadRight { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadHorString")) > 0; } }
 	protected bool dPadLeft { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadHorString")) < 0; } }
 
 
-	void Awake(){
-		if (!loadListFromFile (StringManager.INPUTKEYS)) {
-			Debug.Log ("input", "JSON file did not load");
-			//return false;
-		} else {
-			Debug.Log ("input", "JSON file loaded");
-			//return true;
-		}
-	}
+    void Awake()
+    {
+        keyButtons = new Dictionary<string, string>();
+        controllerButtons = new Dictionary<string, string>();
+
+        if (!loadListFromFile(StringManager.INPUTKEYS))
+        {
+            Debug.Log("input", "JSON file did not load");
+        }
+        else {
+            Debug.Log("input", "JSON file loaded");
+        }
+    }
 
 	string GetInputOrFail(Dictionary<string, string> type, string input)
 	{
-		try {
+        try {
 			return GetKey(type, input);
 		}
 		catch (System.ArgumentException e) {
-			Debug.Log ("input", e.Message);
+			Debug.Log ("input", "INPUTMANAGER: " + e.Message);
 			return null;
 		}
 	}
@@ -87,7 +87,10 @@ public class GameInputType : InputType {
 		return 0;
 	}
 	public override float MoveHorizontalAxis() {
-		if(Input.GetKey(GetInputOrFail(keyButtons, "left")) && Input.GetKey(GetInputOrFail(keyButtons, "right")))
+        string left = GetInputOrFail(keyButtons, "left");
+        string right = GetInputOrFail(keyButtons, "right");
+
+		if(Input.GetKey(left) && Input.GetKey(right))
 			return 0;
 		else if(Input.GetKey(GetInputOrFail(keyButtons, "right")))
 			return 1;
@@ -195,19 +198,24 @@ public class GameInputType : InputType {
 	}
 	
 	//JSON load stuff
-	private bool loadListFromFile(string filePath){
-		if(!System.IO.File.Exists(Application.dataPath + filePath)) {
-			Debug.Log("input", "File does not exist: " + Application.dataPath + filePath);
-			return false;
+	private bool loadListFromFile(string filePath)
+    {
+        TextAsset loadedFile = Resources.Load<TextAsset>(filePath);
+
+		if(loadedFile == null) {
+			Debug.Log("input", "File does not exist: " + filePath);
+            throw new System.Exception("File \"" + filePath + "\" does not exit.");
 		}
-		string json = System.IO.File.ReadAllText(Application.dataPath + filePath);
+
+		string json = loadedFile.text;
 		string platform = Application.platform.ToString();
 		return loadListFromJson(json, platform);
 	}
 
 	// Currently only loads input from JSON file at /Resources/inputManager.json
 	// TODO add check for custom input file, load from that if exists
-	private bool loadListFromJson(string json, string platform){
+	private bool loadListFromJson(string json, string platform)
+    {
 		JSONClass inputs = JSON.Parse (json) as JSONClass;
 		if(inputs == null) {
 			Debug.Log("input", "Json file is empty");
