@@ -12,8 +12,10 @@ public class CheckTargets : MonoBehaviour {
 			Targetable target = go.GetComponent<Targetable>();
 
 			if(target.time <= 0f) {
-				if(!checkCameraVisibility(go))
-					target.time = Vector3.Distance(go.transform.position, PoPCamera.instance.target.position) / 100f;
+                if (!checkCameraVisibility(go))
+                {
+                    target.time = Vector3.Distance(go.transform.position, PoPCamera.instance.target.position) / 100f;
+                }
 			} else
 				target.time -= Time.deltaTime;
 		}
@@ -31,7 +33,7 @@ public class CheckTargets : MonoBehaviour {
 				RaycastHit hit;
 				Physics.Raycast(PoPCamera.instance.transform.position, 
 				                (go.transform.position - PoPCamera.instance.transform.position), 
-				                out hit, Mathf.Infinity, PoPCamera.instance.PlayerLM);
+				                out hit, Mathf.Infinity, PoPCamera.instance.NoOcclusionLM);
 				
 				if(hit.collider.name == go.GetComponent<Collider>().name)
 				{

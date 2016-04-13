@@ -4,9 +4,10 @@ using UnityEngine;
 using System.Collections;
 using Debug = FFP.Debug;
 
-public class QK_Character_Movement : MonoBehaviour {
-
-	private static QK_Character_Movement _instance;
+public class QK_Character_Movement : MonoBehaviour
+{
+    #region Singleton
+    private static QK_Character_Movement _instance;
 	public static QK_Character_Movement Instance 
 	{
 		get 
@@ -18,9 +19,10 @@ public class QK_Character_Movement : MonoBehaviour {
 			return _instance;
 		}
 	}
+    #endregion
 
-	public enum CharacterState {Idle, Move, Pivot, Sprint, Crouch, Hang, Ladder, Sidle, Wait, Normal}
-	public CharacterState _moveState { get; private set; }
+    public enum CharacterState {Idle, Move, Pivot, Sprint, Crouch, Hang, Ladder, Sidle, Wait, Normal}
+	public CharacterState _moveState { get; set; }
 	public CharacterState _stateModifier { get; set; }
 
 	public static CharacterController charCont;

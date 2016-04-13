@@ -40,7 +40,7 @@ public class PauseMenu : MonoBehaviour
 
         // if (InputManager.input.isPause){}
         //  if (InputManager.input.)
-        if (Input.GetKeyDown(KeyCode.Escape)) {      // This will need to be changed to call inputManager  
+        if (InputManager.input.isStart()) {      // This will need to be changed to call inputManager
 			OpenOrClosePauseMenu ();
 			/*
 			if(!isPaused && !isOnPauseMenu) {                         
@@ -93,10 +93,10 @@ public class PauseMenu : MonoBehaviour
 	public void unPauseGame() {
 		if(!DialogueManager.Instance._showing){
 			GHud.showMinimap = true;
+            hideCursor();
 		}
 		isOnPauseMenu = false;
 		isPaused = false;
-		hideCursor ();
 		Time.timeScale = 1f;
 		GHud.hidePauseMenu();
 	}

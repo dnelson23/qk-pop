@@ -7,13 +7,25 @@ using Debug = FFP.Debug;
  
 public class QuestSaveManager : SaveManager {
 
-	public static QuestSaveManager S;
+    private static QuestSaveManager _instance;
+	public static QuestSaveManager S
+    {
+        get
+        {
+            _instance = _instance ?? FindObjectOfType<QuestSaveManager>();
+            if(_instance == null)
+            {
+                Debug.Log("level", "QuestSaveManager not in scene but a script is attempting to access it");
+            }
+            return _instance;
+        }
+    }
 
 	QuestManager _questManager;
 	Quest _quest;
 
-	void Awake(){
-		S = this;
+	void Awake()
+    {
 	}
 
 	public void SaveQuests(List<Quest> currQuests) {

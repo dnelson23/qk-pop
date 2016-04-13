@@ -33,7 +33,7 @@ public class Item : MonoBehaviour
 
 	public bool is_targeted = false;
     public item_type itemType;
-	public push_type current_push_type;
+    public push_type current_push_type;
 	private Vector3 push_forward_direction = Vector3.forward;
 	public float angle_offset = 0.0f;
 	public int itemIndex;

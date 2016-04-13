@@ -55,11 +55,12 @@ public sealed class PoPCamera : Camera_2
 	///@{ Set our layers for different objs in the scene
 	private int noOcclusionLayer = 8;
 	private int playerLayer = 9;
-	private int noTartedOccludionLayer = 10;
+	private int stealthObjsLayer = 10;
 	private int IgnoreRaycastLayer = 2;
 	/// Initialize our actual 32bit layermasks
 	public int PlayerLM = 1;
 	public int NoOcclusionLM = 1;
+    public int IgnoreTargetLM = 1;
 	///@}
 
 	private bool occluded = false;						                //!< Used to check if camera is compensating for occlusion
@@ -71,11 +72,14 @@ public sealed class PoPCamera : Camera_2
 	private List<GameObject> targetedObjects = new List<GameObject>();	//!< List of objects player is targeting
 	private List<GameObject> allTargetables = new List<GameObject>();	//!< Master List of all available targets in scene
     private Shader targetOutline;
+    private Shader standardShader;
     private Dictionary<string, Color> outlineColors = new Dictionary<string, Color>
     {
         { "default", new Color(0, 255, 253) },
-        { "enemy", new Color(255, 0, 0) },
-        { "push", new Color(255, 20, 0) }
+        { "enemy", Color.red },
+        { "push", Color.green },
+        { "soundthrow", Color.magenta },
+        { "taze", Color.cyan }
     };
 
 	void Awake()
@@ -98,6 +102,7 @@ public sealed class PoPCamera : Camera_2
 			}
 		}
 
+        standardShader = Shader.Find("Standard");
         targetOutline = Resources.Load<Shader>("TargetOutline");
         if(targetOutline == null)
         {
@@ -111,9 +116,10 @@ public sealed class PoPCamera : Camera_2
 		// Bit Shift our layermasks
 		PlayerLM = 1 << playerLayer | 1 << IgnoreRaycastLayer;
 		NoOcclusionLM = 1 << noOcclusionLayer | 
-			1 << noTartedOccludionLayer |
+            1 << playerLayer |
+			1 << stealthObjsLayer |
 			1 << IgnoreRaycastLayer;
-		// Inverse both masks
+		// Inverse masks
 		PlayerLM = ~PlayerLM;
 		NoOcclusionLM = ~NoOcclusionLM;
 		Reset();
@@ -134,14 +140,14 @@ public sealed class PoPCamera : Camera_2
         switch (_curState)
         {
             case CameraState.Normal:
-                if (Input.GetMouseButtonDown(1) && AcquireTarget().Count != 0f)
+                if (InputManager.input.isTargetPressed() && AcquireTarget().Count != 0f)
                 {
                     _curState = CameraState.TargetLock;
                 }
                 break;
 
             case CameraState.TargetLock:
-                if (Input.GetMouseButtonDown(1))
+                if (InputManager.input.isTargetPressed())
                 {
 					targetedObjects[targetindex].GetComponent<Item>().is_targeted = false;
                     _curState = CameraState.TargetReset;
@@ -217,7 +223,7 @@ public sealed class PoPCamera : Camera_2
                 }
 
                 RaycastHit hit;
-                Physics.Raycast(transform.position, (targetedObjects[targetindex].transform.position - transform.position), out hit);
+                Physics.Raycast(transform.position, (targetedObjects[targetindex].transform.position - transform.position), out hit, Mathf.Infinity, NoOcclusionLM);
                 if (hit.collider.name != targetedObjects[targetindex].GetComponent<Collider>().name)
                 {
                     targetResetTimer -= Time.deltaTime;
@@ -275,6 +281,7 @@ public sealed class PoPCamera : Camera_2
         }
         
 		mousePosition = Input.mousePosition;
+        HighlightTarget();
 	}
 
 	void CalculateDesiredPosition(float rotateY, float rotateX) {
@@ -373,16 +380,16 @@ public sealed class PoPCamera : Camera_2
 						targets.Insert(i, go);
 					}
 				}
-                go.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
+                //go.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
 			}
-            go.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
+            //go.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
 		}
 
-        if (targets.Count > 0)
+        /*if (targets.Count > 0)
         {
             targets[0].GetComponent<Renderer>().material.shader = PoPCamera.instance.targetOutline;
             targets[0].GetComponent<Renderer>().material.SetColor("_OutlineColor", PoPCamera.instance.outlineColors["default"]);
-        }
+        }*/
 
         return targets;
 	}
@@ -406,6 +413,34 @@ public sealed class PoPCamera : Camera_2
 	{
 		allTargetables.Add (obj);
 	}
+
+    void HighlightTarget()
+    {
+        Renderer rend;
+        if(_curState == CameraState.TargetLock && CurrentTarget() != null)
+        {
+            rend = CurrentTarget().GetComponent<Renderer>();
+            rend.material.shader = targetOutline;
+            rend.material.SetColor("_OutlineColor", outlineColors["default"]);
+        }
+        else if(AcquireTarget().Count != 0f)
+        {
+            rend = AcquireTarget()[0].GetComponent<Renderer>();
+            rend.material.shader = targetOutline;
+            rend.material.SetColor("_OutlineColor", outlineColors["default"]);
+        }
+        else
+        {
+            foreach(GameObject go in allTargetables)
+            {
+                rend = go.GetComponent<Renderer>();
+                if(rend.material.shader != standardShader)
+                {
+                    rend.material.shader = standardShader;
+                }
+            }
+        }
+    }
 	#endregion
 
 	#region Occlusion Checking

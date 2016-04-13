@@ -7,10 +7,10 @@ using Debug = FFP.Debug;
 //! InputType responsible for normal QK in game movement controls
 public class GameInputType : InputType
 {
-	protected bool dPadUp { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadVertString")) > 0; } }
-	protected bool dPadDown { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadVertString")) < 0; } }
-	protected bool dPadRight { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadHorString")) > 0; } }
-	protected bool dPadLeft { get { return Input.GetAxis(GetInputOrFail(controllerButtons, "dPadHorString")) < 0; } }
+	protected bool dPadUp { get { return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "dPadVertString")) > 0; } }
+	protected bool dPadDown { get { return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "dPadVertString")) < 0; } }
+	protected bool dPadRight { get { return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "dPadHorString")) > 0; } }
+	protected bool dPadLeft { get { return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "dPadHorString")) < 0; } }
 
 
     void Awake()
@@ -47,28 +47,28 @@ public class GameInputType : InputType
 	}
 
 	public override float CameraVerticalAxis() {
-		if(Input.GetAxis("Mouse Y") != 0)
-			return Input.GetAxis("Mouse Y");
-		else if(Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightVert")) != 0)
-			return Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightVert"));
+		if(Input.GetAxisRaw("Mouse Y") != 0)
+			return Input.GetAxisRaw("Mouse Y");
+		else if(Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightVert")) != 0)
+			return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightVert"));
 			
-		if(Input.GetAxis("Mouse Y") > 0 || Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightVert"))>0){
+		if(Input.GetAxisRaw("Mouse Y") > 0 || Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightVert"))>0){
 			return 1;
-		}else if(Input.GetAxis("Mouse Y") < 0 || Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightVert")) < 0){
+		}else if(Input.GetAxisRaw("Mouse Y") < 0 || Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightVert")) < 0){
 			return -1;
 		}
 		return 0;
 	}
 
 	public override float CameraHorizontalAxis() {
-		if(Input.GetAxis("Mouse X") != 0)
-			return Input.GetAxis("Mouse X");
-		else if(Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightHor")) != 0)
-			return Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightHor"));
+		if(Input.GetAxisRaw("Mouse X") != 0)
+			return Input.GetAxisRaw("Mouse X");
+		else if(Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightHor")) != 0)
+			return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightHor"));
 			
-		if(Input.GetAxis("Mouse X") > 0 || Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightHor"))>0){
+		if(Input.GetAxisRaw("Mouse X") > 0 || Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightHor"))>0){
 			return 1;
-		}else if(Input.GetAxis("Mouse X") < 0 || Input.GetAxis(GetInputOrFail(controllerButtons, "controllerRightHor")) < 0){
+		}else if(Input.GetAxisRaw("Mouse X") < 0 || Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerRightHor")) < 0){
 			return -1;
 		}
 		return 0;
@@ -81,8 +81,8 @@ public class GameInputType : InputType
 			return 1;
 		} else if(Input.GetKey(GetInputOrFail(keyButtons, "backward")))
 			return -1;
-		else if(Input.GetAxis(GetInputOrFail(controllerButtons, "controllerVert")) != 0) {
-            return Input.GetAxis(GetInputOrFail(controllerButtons, "controllerVert"));
+		else if(Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerVert")) != 0) {
+            return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerVert"));
 		} 
 		return 0;
 	}
@@ -96,8 +96,8 @@ public class GameInputType : InputType
 			return 1;
 		else if(Input.GetKey(GetInputOrFail(keyButtons, "left")))
 			return -1;
-		else if(Input.GetAxis(GetInputOrFail(controllerButtons, "controllerHor")) != 0) {
-            return Input.GetAxis(GetInputOrFail(controllerButtons, "controllerHor"));
+		else if(Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerHor")) != 0) {
+            return Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerHor"));
 		} 
 		return 0;
 	}
@@ -106,7 +106,7 @@ public class GameInputType : InputType
 		if(Input.GetButton(GetInputOrFail(controllerButtons, "controllerAction"))) {
 			return true;
 		}
-		return Input.GetKey(GetInputOrFail(keyButtons, "qAbility1"));
+		return Input.GetKeyDown(GetInputOrFail(keyButtons, "qAbility"));
 	}
 
 	public override bool isCrouched() {
@@ -161,14 +161,22 @@ public class GameInputType : InputType
 		if(dPadLeft) {
 			return true;
 		}
-		return Input.GetKey(GetInputOrFail(keyButtons, "compass"));
+		return Input.GetKeyDown(GetInputOrFail(keyButtons, "compass"));
 	}
 	public override bool isJournal() {
 		if(dPadRight) {
 			return true;
 		}
-		return Input.GetKey(GetInputOrFail(keyButtons, "journal"));
+		return Input.GetKeyDown(GetInputOrFail(keyButtons, "journal"));
 	}
+    public override bool isStart()
+    {
+        if(Input.GetButton(GetInputOrFail(controllerButtons, "controllerStart")))
+        {
+            return true;
+        }
+        return Input.GetKeyDown(GetInputOrFail(keyButtons, "pause"));
+    }
 	public override int CameraScrollTarget() {
 		if(!InputManager.changeSkills)
 			return ScrollTarget();
@@ -176,11 +184,11 @@ public class GameInputType : InputType
 			return 0;
 	}
 	public override int ScrollTarget() {
-		if(Input.GetAxis("Mouse ScrollWheel") > 0 || 
-			Input.GetAxis(GetInputOrFail(controllerButtons, "controllerNextAbility"))>0){
+		if(Input.GetAxisRaw("Mouse ScrollWheel") > 0 || 
+			Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerNextAbility"))>0){
 			return 1;
-		}else if(Input.GetAxis("Mouse ScrollWheel") < 0 || 
-			Input.GetAxis(GetInputOrFail(controllerButtons, "controllerPreviousAbility")) < 0){
+		}else if(Input.GetAxisRaw("Mouse ScrollWheel") < 0 || 
+			Input.GetAxisRaw(GetInputOrFail(controllerButtons, "controllerPreviousAbility")) < 0){
 			return -1;
 		}
 		return 0;

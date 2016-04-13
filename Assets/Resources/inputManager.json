@@ -52,8 +52,8 @@
 		"notifications": "l",
 		"compass": "k",
 		"journal": "j",
-		"qAbility1": "q",
+		"qAbility": "mouse 0",
 		"cycleTarget": "Mouse ScrollWheel",
-		"pause": "esc"
+		"pause": "escape"
 	}
 }

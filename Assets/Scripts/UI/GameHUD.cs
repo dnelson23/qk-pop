@@ -42,7 +42,7 @@ public class GameHUD : MonoBehaviour {
 	public float minimapYOffset;
 	public Sprite[] targetableIcons;
 	public Sprite enemyIcon;
-	public bool calcCompass = false;
+	public bool calcCompass = true;
 	
 	//public GameObject closestTargetIconPrefab;
 
@@ -112,8 +112,7 @@ public class GameHUD : MonoBehaviour {
         //!Set objective text reference
         objectiveText = GameObject.Find("ObjectiveNotice");
         QuestNotText = GameObject.Find("objectiveText").GetComponent<Text>();
-        Debug.Log("ui", QuestNotText.text);
-        //objectiveText.SetActive(false);
+        objectiveText.SetActive(false);
 
         phoneButtons = GameObject.Find("PhoneButtons");
 
@@ -160,17 +159,18 @@ public class GameHUD : MonoBehaviour {
 	/*!Update function that is called once every frame
 	 * Handles the opening and closing of the journal and when to display an icon above the selected or closest target
 	 */
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.Escape) && journal.activeSelf) {
+	void Update()
+    {
+		if (InputManager.input.isStart() && journal.activeSelf) {
 			CloseJournal();
 		}
-		if (Input.GetKeyDown (KeyCode.Tab) && (!journal.activeSelf && !questManagerUI.activeSelf && !PauseMenu.Instance.isOnPauseMenu)){
+		if (InputManager.input.isJournal() && (!journal.activeSelf && !questManagerUI.activeSelf && !PauseMenu.Instance.isOnPauseMenu)){
 			//Time.timeScale = 0f;
 			//ShowJournal();
 			PauseMenu.Instance.OpenOrClosePauseMenu ();
 			ButtonController.instane.ClickJournalButton_PauseMenu();
-			}
-		else if(Input.GetKeyDown (KeyCode.Tab) && journal.activeSelf){
+		}
+		else if(InputManager.input.isJournal() && journal.activeSelf){
 			CloseJournal();
 			PauseMenu.Instance.OpenOrClosePauseMenu ();
 		}
@@ -194,7 +194,7 @@ public class GameHUD : MonoBehaviour {
 		UpdateMapObjects();
 
 		//!Set the compass indicator
-		if(!testObjective || !calcCompass){
+		if(!testObjective){
 			leftArrow.SetActive (false);
 			slider.SetActive (false);
 			rightArrow.SetActive (false);
@@ -213,6 +213,13 @@ public class GameHUD : MonoBehaviour {
 
     IEnumerator DisplayObjectiveNotification(string message)
     {
+        // Wait until dialogue is up
+        while(DialogueManager.Instance._showing)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        // Show text for 3 seconds before fading
         objectiveText.SetActive(true);
         QuestNotText.text = message;
         yield return new WaitForSeconds(3);
@@ -346,10 +353,14 @@ public class GameHUD : MonoBehaviour {
 	}
 
 	[EventVisibleAttribute]
-	public void MoveCompassTargetPoint(GameObject NextQuestLocation){
-		testObjective.transform.position = NextQuestLocation.transform.position;
-		calcCompass = true;
-		return;
+	public void MoveCompassTargetPoint(GameObject NextQuestLocation)
+    {
+        testObjective = NextQuestLocation;
+        if (testObjective != null)
+        {
+            testObjective.transform.position = NextQuestLocation.transform.position;
+            calcCompass = true;
+        }
 	}
 
 	[EventVisibleAttribute]

@@ -53,14 +53,12 @@ public class QuestManager : MonoBehaviour {
 		if (newQuestList != null) {
 			currentQuests = newQuestList;
 		}
-		//DebugOnScreen.Log (currentQuests.Count + " quests loaded!");
 		return;
 	}
 
 	[EventVisibleAttribute]
 	public void SaveQuests() {
 		_questSaveManager.SaveQuests (currentQuests);
-		//DebugOnScreen.Log ("Quests saved!");
 		return;
 	}
 	
@@ -71,23 +69,19 @@ public class QuestManager : MonoBehaviour {
 	[EventVisibleAttribute]
 	public void UpdateQuests() {
 
-		//DebugOnScreen.Log ("Checking Quests for Completion!");
 		if (currentQuests.Count == 0) {
-			//DebugOnScreen.Log("No quests in List");
 			return;
 		}
 
 		for (int count = currentQuests.Count - 1; count > -1; count--) {
 
 			if(currentQuests[count].IsFailed() == true) {
-				//DebugOnScreen.Log(currentQuests[count].GetName() + " quest has failed and removed fom Current Quests List and added to Failed Quests List!");
 				failedQuests.Add(currentQuests[count]);
 				currentQuests.RemoveAt(count);
 				continue;
 			}
 
 			if(currentQuests[count].IsCompleted() == true) {
-				//DebugOnScreen.Log (currentQuests[count].GetName() + " quest is completed, removed from Current Quests List and added to Completed Quests List!");
 				_questSaveManager.SaveCompletedQuest(currentQuests[count]);
 				completedQuests.Add(currentQuests[count]);
 				currentQuests.RemoveAt(count);
@@ -99,9 +93,7 @@ public class QuestManager : MonoBehaviour {
 
 	[EventVisibleAttribute]
 	public void CompleteGoalInQuest(int questID, int goalIndex) {
-		//DebugOnScreen.Log("IN COMPLETE GOAL IN QUEST!");
 		if (currentQuests.Count < 1) {
-			//DebugOnScreen.Log("No quests in List!");
 			return;
 		}
 
@@ -115,7 +107,6 @@ public class QuestManager : MonoBehaviour {
 	[EventVisibleAttribute]
 	public void ProgressGoalInQuest(int questID, int goalIndex) {
 		if (currentQuests.Count < 1) {
-			//DebugOnScreen.Log("No quests in List!");
 			return;
 		}
 
@@ -137,22 +128,21 @@ public class QuestManager : MonoBehaviour {
 	}*/
 
 	[EventVisibleAttribute]
-	public void AddQuest(int questID) {
-
+	public void AddQuest(int questID)
+    {
 		if (_questSaveManager.CompletedQuest (questID) == true) {
-			DebugOnScreen.Log("Quest has already been completed. Delete in PlayerPrefs probably");
+			Debug.Log("ui", "Quest has already been completed. Delete in PlayerPrefs probably");
 			return;
 		}
 
 		Quest newQuest = _quest.AddQuest (questID);
 
 		if (newQuest == null) {
-			DebugOnScreen.Log("New Quest is null. Not adding to List!");
+			Debug.Log("ui", "New Quest is null. Not adding to List!");
 			return;
 		}
 
 		currentQuests.Add (newQuest);
-		DebugOnScreen.Log ("Added quest!");
 
 		if (newQuest.HasTimer () == true) {
 
@@ -165,7 +155,6 @@ public class QuestManager : MonoBehaviour {
 	
 
 	IEnumerator StartTimer(Quest q) {
-		//DebugOnScreen.Log ("Starting timer for " + q.GetTimerLength() + " seconds.");
 
 		yield return new WaitForSeconds ((float)q.GetTimerLength());
 

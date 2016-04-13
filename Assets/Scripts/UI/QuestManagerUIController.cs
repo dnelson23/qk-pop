@@ -5,9 +5,26 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Debug = FFP.Debug;
 
-public class QuestManagerUIController : MonoBehaviour {
+public class QuestManagerUIController : MonoBehaviour
+{
 
-	public GameObject questContainer;
+    #region Singleton
+    private static QuestManagerUIController _instance;
+    public static QuestManagerUIController Instance
+    {
+        get
+        {
+            _instance = _instance ?? (_instance = GameObject.FindObjectOfType<QuestManagerUIController>());
+            if(_instance == null)
+            {
+                Debug.Log("ui", "No QuestManagerUIController in scene but a script is attempting to access it.");
+            }
+            return _instance;
+        }
+    }
+    #endregion
+
+    public GameObject questContainer;
 	public GameObject questUI;
 	public float spacing;
 
@@ -141,7 +158,7 @@ public class QuestManagerUIController : MonoBehaviour {
 			}
 		}
 		RectTransform containerTransform = questContainer.GetComponent<RectTransform> ();
-		containerTransform.sizeDelta = new Vector2 (100, qcHeight);
+		containerTransform.sizeDelta = new Vector2 (75, qcHeight);
 		newScrollVal = ((buttonHeight + spacing) + spacing) / qcHeight;
 
 		mainScrollbar.value = 0.99f;
